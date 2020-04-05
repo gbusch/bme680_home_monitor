@@ -1,6 +1,9 @@
 # influxdb data
 raspberrypi/influxdb/data/*
 
+# vscode
+.vscode/
+
 
 # Prerequisites
 *.d

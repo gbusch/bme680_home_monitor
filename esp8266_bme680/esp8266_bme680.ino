@@ -205,7 +205,7 @@ void output_ready(int64_t timestamp, float iaq, uint8_t iaq_accuracy, float temp
     Serial.println(")");
     char JSONmessageBuffer[75];
     snprintf(JSONmessageBuffer, sizeof(JSONmessageBuffer), R"({"temperature": %.2f,"humidity": %.2f, "pressure": %.0f, "IAQ": %.2f})", temperature, humidity, pressure/100., iaq);
-    client.publish("/test/temp", JSONmessageBuffer);
+    client.publish("/weather/bedroom", JSONmessageBuffer);
 }
 
 /*!
