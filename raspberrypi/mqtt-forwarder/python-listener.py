@@ -19,7 +19,7 @@ def persist(msg):
     ]
     influx_client.write_points(json_body)
 
-logging.basicConfig(level=logging.DEBUG)
+logging.basicConfig(level=logging.INFO)
 influx_client = InfluxDBClient('influxdb', 8086, database=os.environ["INFLUXDB_DB"].strip(), username=os.environ["INFLUXDB_USER"].strip(), password=os.environ["INFLUXDB_USER_PASSWORD"].strip())
 client = mqtt.Client()
 
