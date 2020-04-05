@@ -5,3 +5,32 @@ services:
     restart: always
     ports:
       - "1883:1883"
+  
+  influxdb:
+    image: influxdb:1.5.4
+    restart: always
+    ports:
+      - "8086:8086"
+    volumes:
+      - "./influxdb/data:/var/lib/influxdb"
+    environment:
+      - INFLUXDB_DB=home_measurements
+      - INFLUXDB_USER=home
+      - INFLUXDB_USER_PASSWORD=secret-password
+
+  mqtt-forwarder:
+    build: ./mqtt-forwarder
+    restart: always
+    environment:
+      - INFLUXDB_DB=home_measurements
+      - INFLUXDB_USER=home
+      - INFLUXDB_USER_PASSWORD=secret-password
+    depends_on:
+      - mqtt
+      - influxdb
+  
+  grafana:
+    image: grafana/grafana:5.4.3
+    restart: always
+    ports:
+      - "3000:3000"

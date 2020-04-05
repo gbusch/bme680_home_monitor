@@ -1,3 +1,7 @@
+# influxdb data
+raspberrypi/influxdb/data/*
+
+
 # Prerequisites
 *.d
 
