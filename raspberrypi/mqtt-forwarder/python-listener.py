@@ -23,7 +23,7 @@ logging.basicConfig(level=logging.INFO)
 influx_client = InfluxDBClient('influxdb', 8086, database=os.environ["INFLUXDB_DB"].strip(), username=os.environ["INFLUXDB_USER"].strip(), password=os.environ["INFLUXDB_USER_PASSWORD"].strip())
 client = mqtt.Client()
 
-client.on_connect = lambda self, mosq, obj, rc: self.subscribe("/test/temp")
+client.on_connect = lambda self, mosq, obj, rc: self.subscribe("/weather/bedroom")
 client.on_message = lambda client, userdata, msg: persist(msg)
 
 client.connect("mqtt", 1883, 60)
