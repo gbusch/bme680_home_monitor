@@ -1,0 +1,9 @@
+notifiers:
+  - name: "IAQ alert"
+    type: telegram
+    uid: notifier1
+    org_name: "Main Org."
+    settings:
+      bottoken: ***REMOVED***
+      chatid: ***REMOVED***
+      uploadImage: true

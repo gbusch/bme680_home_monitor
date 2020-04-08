@@ -161,9 +161,14 @@
         "for": "5m",
         "frequency": "1m",
         "handler": 1,
+        "message": "IAQ > 100",
         "name": "IAQ alert",
         "noDataState": "keep_state",
-        "notifications": []
+        "notifications": [
+          {
+            "uid": "notifier1"
+          }
+        ]
       },
       "aliasColors": {},
       "bars": false,
@@ -179,12 +184,12 @@
       "id": 2,
       "legend": {
         "avg": false,
-        "current": false,
+        "current": true,
         "max": false,
         "min": false,
         "show": true,
         "total": false,
-        "values": false
+        "values": true
       },
       "lines": true,
       "linewidth": 1,
@@ -200,6 +205,7 @@
       "steppedLine": false,
       "targets": [
         {
+          "alias": "IAQ",
           "groupBy": [
             {
               "params": [
@@ -503,5 +509,5 @@
   "timezone": "",
   "title": "Home Measurements",
   "uid": "kpBr4Nzgz",
-  "version": 2
+  "version": 1
 }
