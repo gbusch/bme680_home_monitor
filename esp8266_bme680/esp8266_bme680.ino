@@ -80,6 +80,11 @@
 #include <ESP8266WiFi.h>
 #include <PubSubClient.h>
 
+#include "data.pb.h"
+#include <pb_common.h>
+#include <pb.h>
+#include <pb_encode.h>
+
 const char* ssid = "***REMOVED***";
 const char* password = "***REMOVED***";
 const char* mqttServer = "***REMOVED***";
@@ -203,9 +208,23 @@ void output_ready(int64_t timestamp, float iaq, uint8_t iaq_accuracy, float temp
     Serial.print(" (");
     Serial.print(iaq_accuracy);
     Serial.println(")");
-    char JSONmessageBuffer[75];
-    snprintf(JSONmessageBuffer, sizeof(JSONmessageBuffer), R"({"temperature": %.2f,"humidity": %.2f, "pressure": %.0f, "IAQ": %.2f})", temperature, humidity, pressure/100., iaq);
-    client.publish("/weather/bedroom", JSONmessageBuffer);
+
+    pb_WeatherData data;
+    data.deviceId = 1;
+    data.temperature = temperature;
+    data.humidity = humidity;
+    data.pressure = pressure/100.;
+    data.IAQ = iaq;
+    data.iaq_accuracy = iaq_accuracy;
+
+    uint8_t buffer[128];
+    pb_ostream_t stream = pb_ostream_from_buffer(buffer, 128);
+
+    if (!pb_encode(&stream, pb_WeatherData_fields, &data)){
+        Serial.println("failed to encode temp proto");
+    } else {
+        client.publish("/weather/bedroom", buffer, stream.bytes_written);
+    }
 }
 
 /*!
@@ -272,7 +291,7 @@ void setup()
     return_values_init ret;
 
     /* Init I2C and serial communication */
-    Wire.begin(0,2);
+    Wire.begin(0,4);
     Serial.begin(115200);
     WiFi.begin(ssid, password);
     Serial.println("Connecting to Wifi");

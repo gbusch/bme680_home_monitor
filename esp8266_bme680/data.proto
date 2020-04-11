@@ -1,0 +1,11 @@
+syntax = "proto2";
+package pb;
+
+message WeatherData {
+    required int32 deviceId = 1;
+    required float temperature = 2;
+    required float humidity = 3;
+    required float pressure = 4;
+    required float IAQ = 5;
+    required int32 iaq_accuracy = 6;
+}
