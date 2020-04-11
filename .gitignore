@@ -37,3 +37,6 @@ raspberrypi/influxdb/data/*
 *.exe
 *.out
 *.app
+
+# Python
+*.pyc
