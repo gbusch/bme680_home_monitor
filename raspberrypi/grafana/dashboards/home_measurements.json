@@ -157,13 +157,13 @@
             "type": "query"
           }
         ],
-        "executionErrorState": "keep_state",
+        "executionErrorState": "alerting",
         "for": "5m",
         "frequency": "1m",
         "handler": 1,
         "message": "IAQ > 100",
         "name": "IAQ alert",
-        "noDataState": "keep_state",
+        "noDataState": "alerting",
         "notifications": [
           {
             "uid": "notifier1"
