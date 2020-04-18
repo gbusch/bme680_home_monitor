@@ -7,7 +7,7 @@ services:
       - "1883:1883"
   
   influxdb:
-    image: influxdb:1.5.4
+    image: influxdb:1.8.0
     restart: always
     ports:
       - "8086:8086"
@@ -17,6 +17,7 @@ services:
       - INFLUXDB_DB=home_measurements
       - INFLUXDB_USER=home
       - INFLUXDB_USER_PASSWORD=secret-password
+      - INFLUXDB_REPORTING_DISABLED=true
 
   mqtt-forwarder:
     build: ./mqtt-forwarder

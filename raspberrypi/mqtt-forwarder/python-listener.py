@@ -23,7 +23,10 @@ def persist(msg):
                     "temperature": float(data.temperature),
                     "humidity": float(data.humidity),
                     "pressure": int(data.pressure),
-                    "IAQ": float(data.IAQ)
+                    "IAQ": float(data.IAQ),
+                    "IAQ_accuray": int(data.iaq_accuracy),
+                    "CO2": float(data.CO2),
+                    "breath_VOC": float(data.breath_VOC)
                 }
             }
         ]
@@ -33,13 +36,26 @@ def persist(msg):
         print(msg.topic+" Expected WeatherData but got: "+str(msg.payload))
     except:
         print("other error")
+        raise
 
 logging.basicConfig(level=logging.INFO)
-influx_client = InfluxDBClient('influxdb', 8086, database=os.environ["INFLUXDB_DB"].strip(), username=os.environ["INFLUXDB_USER"].strip(), password=os.environ["INFLUXDB_USER_PASSWORD"].strip())
+try:
+    print("connecting to Influx")
+    influx_client = InfluxDBClient('influxdb', 8086, database=os.environ["INFLUXDB_DB"].strip(), username=os.environ["INFLUXDB_USER"].strip(), password=os.environ["INFLUXDB_USER_PASSWORD"].strip())
+except:
+    print("cannot connect to Influx")
+    raise
+
+
 client = mqtt.Client()
 
 client.on_connect = lambda self, mosq, obj, rc: self.subscribe("/weather/bedroom")
 client.on_message = lambda client, userdata, msg: persist(msg)
 
-client.connect("mqtt", 1883, 60)
-client.loop_forever()
+try:
+    print("connecting to MQTT")
+    client.connect("mqtt", 1883, 60)
+    client.loop_forever()
+except:
+    print("cannot connect to MQTT")
+    raise
