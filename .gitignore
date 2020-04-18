@@ -3,7 +3,7 @@ raspberrypi/influxdb/data/*
 
 # vscode
 .vscode/
-
+.DS_Store
 
 # Prerequisites
 *.d
@@ -30,7 +30,6 @@ raspberrypi/influxdb/data/*
 # Compiled Static libraries
 *.lai
 *.la
-*.a
 *.lib
 
 # Executables
