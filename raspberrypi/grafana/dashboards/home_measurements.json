@@ -136,7 +136,7 @@
           {
             "evaluator": {
               "params": [
-                100
+                200
               ],
               "type": "gt"
             },
@@ -161,7 +161,7 @@
         "for": "5m",
         "frequency": "1m",
         "handler": 1,
-        "message": "IAQ > 100",
+        "message": "IAQ > 200",
         "name": "IAQ alert",
         "noDataState": "alerting",
         "notifications": [
@@ -248,7 +248,7 @@
           "fill": true,
           "line": true,
           "op": "gt",
-          "value": 100
+          "value": 200
         }
       ],
       "timeFrom": null,
