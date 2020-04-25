@@ -10,8 +10,10 @@ Additional requirements, which were mostly not practically necessary but rather 
 * software on microcontroller should be fully version controlled, including dependencies
 * software on Raspberry Pi should be fully version controlled as well, including all configurations, and all software should be started with one command.
 
+![screenshot of dashboard missing](./images/dashboard.png)
+
 ## Realization
-This was realized with a BME680 sensor from Bosch connected to a ESP32 which is a powerful microcontroller with, amongst others, wifi connectivity. The backend and frontend run on a Raspberry Pi 3. As frontend we use Grafana which also allows for alerting, for example as Telegram notifications on the smart phone. The Grafana dashboard can be accessed from all devices which are connected to the home wifi network.
+This was realized with a BME680 sensor from Bosch connected to a ESP32 which is a powerful microcontroller with, amongst others, wifi connectivity. The backend and frontend run on a Raspberry Pi 3B+. As frontend we use Grafana which also allows for alerting, for example as Telegram notifications on the smart phone. The Grafana dashboard can be accessed from all devices which are connected to the home wifi network.
 
 ![image missing](./images/schematics.png "Schematics")
 

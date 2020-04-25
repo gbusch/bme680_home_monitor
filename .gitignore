@@ -1,6 +1,9 @@
 # influxdb data
 raspberrypi/influxdb/data/*
 
+# telegram notifier (credentials)
+grafana/provisioning/notifiers/telegram.yml
+
 # vscode
 .vscode/
 .DS_Store

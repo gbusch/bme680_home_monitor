@@ -85,9 +85,9 @@
 #include <pb.h>
 #include <pb_encode.h>
 
-const char* ssid = "***REMOVED***";
-const char* password = "***REMOVED***";
-const char* mqttServer = "***REMOVED***";
+const char* ssid = ## your wifi name here ##;
+const char* password = ## your wifi password here ##;
+const char* mqttServer = ## your MQTT brokers (raspberry pi) address ##;
 const int mqttPort = 1883;
 
 WiFiClient espClient;
