@@ -18,7 +18,16 @@ This was realized with a BME680 sensor from Bosch connected to a ESP32 which is 
 ![image missing](./images/schematics.png "Schematics")
 
 ### Measuring and sending data with the ESP32
-TBD
+The manufacturer of the BME680 sensor provides a library for several controllers, including the ESP8266/ESP32. In contrast to other open-source libraries for the BME-sensor series, the so-called BSEC library includes a self-calibration of the indoor air quality sensors.
+
+The scripts provided were augmented with additional functionality for this project:
+* connection to the home wifi, using the standard wifi library for ESP32
+* connection and publishing to an MQTT-broker using the pubsub-client library
+* encoding of messages to protocol buffers using the nanopb library (more details on protocol buffers below).
+
+PlatformIO was used to program the ESP32. This platform does not only offer the comfort of an IDE (e.g. code completion) but also dependency management. This is a huge improvement compared to Arduino IDE where dependencies are usually installed manually and stored globally. Here, the dependencies are tracked per project which allows to include them into version control and they are installed automatically when building the project. 
+
+Software for the ESP32 is provided in the [esp32_bme680](./esp32_bme680/) folder, detailed instructions can be found in the associated [README](./esp32_bme680/README.md).
 
 ### Compiling the protocol buffers
 TBD
@@ -33,7 +42,7 @@ TBD
 ## Shopping list
 Here is a short overview of the parts that you will need:
 * The BME680 sensor from Bosch Sensortec. You probably want to get a breakout board. I got the one from BlueDot. A soldering iron was needed to solder the 6-pin header to the board. There might be boards on the market that have the header already attached. Cost: around 20 €. (If you are not interested in indoor air quality but only temperature and humidity you might want to check out the BME280 which is available for less than 5 €.)
-* An ESP32 microcontroller. I used the ESP32 Dev Kit C from az-delivery.de but there are many different versions on the market that should work as well. A ESP8266 can also be used but I failed to fully program it with platform.io without any manual modifications. Cost: around 10 €.
+* An ESP32 microcontroller. I used the ESP32 Dev Kit C from az-delivery.de but there are many different versions on the market that should work as well. A ESP8266 can also be used but I failed to fully program it with platformIO without any manual modifications. Cost: around 10 €.
 * Jumper wires (female-female) to connect ESP32 and sensor.
 * A micro-USB charger to power the ESP32.
 * A Raspberry Pi with (micro) SD card and power supply. I got an ABOX (now LABISTS) Raspberry Pi 3B+ starter kit which also contained case, power supply, heat sinks and SD card. Cost: around 85 € (A bare Raspberry Pi costs only half, but I recommend to get one proper kit since you can use it for many other projects at the same time as well).
