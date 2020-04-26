@@ -1,4 +1,16 @@
 # Indoor air quality monitoring
+From (indoor air quality) measurement to dashboard without any manual configuration.
+
+## Table of contents
+* [Goal](#Goal)
+  * [Additional technical requirements](#Additional-technical-requirements)
+* [Realization](#Realization)
+  * [Measuring and sending data with the ESP32](#Measuring-and-sending-data-with-the-ESP32)
+  * [Processing, storing, and displaying data on the Raspberry Pi](#Processing,-storing,-and-displaying-data-on-the-Raspberry-Pi)
+  * [Compiling the protocol buffers](#Compiling-the-protocol-buffers)
+* [Shopping list](#Shopping-list)
+* [How to get started](#How-to-get-started)
+
 
 ## Goal
 My goal was to monitor temperature, humidity and indoor air quality (IAQ) in our apartment and display it in a dashboard which should be accessible from within our home network.
@@ -29,20 +41,6 @@ PlatformIO was used to program the ESP32. This platform does not only offer the 
 
 Software for the ESP32 is provided in the [esp32_bme680](./esp32_bme680/) folder, detailed instructions can be found in the associated [README](./esp32_bme680/README.md).
 
-### Compiling the protocol buffers
-Protocol buffers (short: protobuf) are a language- and platform-neutral mechanism for the serialization and deserialization of structured data. They were developed by Google to be simpler, smaller, faster and easier to maintainer than XML, but even surpass JSON in their performance.
-
-While it is considerably easy to define the message format (see [data.proto](esp32_bme680/src/data.proto)), these proto-files then have to be compiled for each language that they should be used with. Support for several languages, including python, is provided with Google's compiler. Support for other languages is added by the community, namely nanopb for embedded devices like our ESP32.
-
-*Good news is: As long as you do not want to change the message format, there is nothing you have to do as the needed compiled files are included in the repo.*
-
-Note that if, for any reason, you want to change the message format, you need to:
-* compile it for the ESP32 (with nanopb) and for the MQTT Forwarder (python)
-* change the part where the message is encoded in [main.cpp](esp32_bme680/src/main.cpp) and where it is decoded in [python-listener.py](raspberrypi/mqtt-forwarder/python-listener.py)
-* delete the existing InfluxDB database or use a new one in case the schema changes in this process.
-
-The base-compiler protoc as well as nanopb can be installed locally. However to avoid trouble with dependencies, it might be worth considering a dockerized version. You can find more information on the docker image and how to use it on [DockerHub](https://hub.docker.com/repository/docker/buschg/protobuf-compiler/general) (you need a DockerHub account) or [GitHub](https://github.com/gbusch/protobuf-compiler).
-
 ### Processing, storing, and displaying data on the Raspberry Pi
 The measurements that the ESP32 sent as protobuf-encoded MQTT messages, are then processed, stored and displayed using different software components:
 * Eclipse Mosquitto as MQTT broker. The ESP32 publishes messages to a specific topic. Other programs can now subscribe to this topic and receive the messages. The MQTT broker is accessible within the home network and can be used for other projects as well.
@@ -58,6 +56,20 @@ All these components are running as Docker containers on the Raspberry Pi. Using
 
 Software and more detailed instructions on how to set it up on the Raspberry Pi can be found in the directory [raspberrypi](./raspberrypi/) and the corresponding [README](./raspberrypi/README.md).
 
+### Compiling the protocol buffers
+As mentioned before, the messages that are sent from the ESP32 are encoded as protocol buffers. Protocol buffers (short: protobuf) are a language- and platform-neutral mechanism for the serialization and deserialization of structured data. They were developed by Google to be simpler, smaller, faster and easier to maintainer than XML, but even surpass JSON in their performance.
+
+While it is considerably easy to define the message format (see [data.proto](esp32_bme680/src/data.proto)), these proto-files then have to be compiled for each language that they should be used with. Support for several languages, including python, is provided with Google's compiler. Support for other languages is added by the community, namely nanopb for embedded devices like our ESP32.
+
+*Good news is: As long as you do not want to change the message format, there is nothing you have to do as the needed compiled files are included in the repo.*
+
+Note that if, for any reason, you want to change the message format, you need to:
+* compile it for the ESP32 (with nanopb) and for the MQTT Forwarder (python)
+* change the part where the message is encoded in [main.cpp](esp32_bme680/src/main.cpp) and where it is decoded in [python-listener.py](raspberrypi/mqtt-forwarder/python-listener.py)
+* delete the existing InfluxDB database or use a new one in case the schema changes in this process.
+
+The base-compiler protoc as well as nanopb can be installed locally. However to avoid trouble with dependencies, it might be worth considering a dockerized version. You can find more information on the docker image and how to use it on [DockerHub](https://hub.docker.com/repository/docker/buschg/protobuf-compiler/general) (you need a DockerHub account) or [GitHub](https://github.com/gbusch/protobuf-compiler).
+
 
 ## Shopping list
 Here is a short overview of the parts that you will need:
@@ -66,3 +78,10 @@ Here is a short overview of the parts that you will need:
 * Jumper wires (female-female) to connect ESP32 and sensor.
 * A micro-USB charger to power the ESP32.
 * A Raspberry Pi with (micro) SD card and power supply. I got an ABOX (now LABISTS) Raspberry Pi 3B+ starter kit which also contained case, power supply, heat sinks and SD card. Cost: around 85 € (A bare Raspberry Pi costs only half, but I recommend to get one proper kit since you can use it for many other projects at the same time as well).
+
+
+## How to get started
+* Get the parts from the shopping list
+* Follow [this description](./esp32_bme680/README.md) to connect the sensor and upload the software to the ESP32. Each time serial output is printed, the LED of the ESP32 blinks. For that reason most ```Serial.println()``` are commented out in the script. You might want to use these statements at first for debugging.
+* Follow [this description](./raspberrypi/README.md) to setup the Raspberry Pi.
+* You can now point your browser to ```http://<address of your raspberry pi>:3000/d/kpBr4Nzgz/home-measurements?orgId=1``` to see your measurements in a dashboard.
