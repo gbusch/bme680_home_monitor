@@ -16,4 +16,4 @@ const char* mqttServer = ## your MQTT brokers (raspberry pi) address ##;
 const int mqttPort = 1883;
 ```
 
-Note: Most software in this folder is provided by Bosch Sensortec and only slightly modified. All rights remain at Bosch Sensortec.
+*Note: Most software in this folder is provided by Bosch Sensortec and only slightly modified. All rights remain at Bosch Sensortec.*

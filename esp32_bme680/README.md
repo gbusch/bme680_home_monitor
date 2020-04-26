@@ -12,4 +12,4 @@
 
 * You can now upload the project to the ESP32 using platform.io.
 
-Note: Most software in this folder, including the precompiled library, is provided by Bosch Sensortec and only slightly modified. All rights remain at Bosch Sensortec.
+*Note: Most software in this folder, including the precompiled library, is provided by Bosch Sensortec and only slightly modified. All rights remain at Bosch Sensortec.*

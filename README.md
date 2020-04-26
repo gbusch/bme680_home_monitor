@@ -30,13 +30,33 @@ PlatformIO was used to program the ESP32. This platform does not only offer the 
 Software for the ESP32 is provided in the [esp32_bme680](./esp32_bme680/) folder, detailed instructions can be found in the associated [README](./esp32_bme680/README.md).
 
 ### Compiling the protocol buffers
-TBD
+Protocol buffers (short: protobuf) are a language- and platform-neutral mechanism for the serialization and deserialization of structured data. They were developed by Google to be simpler, smaller, faster and easier to maintainer than XML, but even surpass JSON in their performance.
 
-You can find more information on the docker image and how to use it on [DockerHub](https://hub.docker.com/repository/docker/buschg/protobuf-compiler/general) (you need a DockerHub account) or [GitHub](https://github.com/gbusch/protobuf-compiler).
+While it is considerably easy to define the message format (see [data.proto](esp32_bme680/src/data.proto)), these proto-files then have to be compiled for each language that they should be used with. Support for several languages, including python, is provided with Google's compiler. Support for other languages is added by the community, namely nanopb for embedded devices like our ESP32.
+
+*Good news is: As long as you do not want to change the message format, there is nothing you have to do as the needed compiled files are included in the repo.*
+
+Note that if, for any reason, you want to change the message format, you need to:
+* compile it for the ESP32 (with nanopb) and for the MQTT Forwarder (python)
+* change the part where the message is encoded in [main.cpp](esp32_bme680/src/main.cpp) and where it is decoded in [python-listener.py](raspberrypi/mqtt-forwarder/python-listener.py)
+* delete the existing InfluxDB database or use a new one in case the schema changes in this process.
+
+The base-compiler protoc as well as nanopb can be installed locally. However to avoid trouble with dependencies, it might be worth considering a dockerized version. You can find more information on the docker image and how to use it on [DockerHub](https://hub.docker.com/repository/docker/buschg/protobuf-compiler/general) (you need a DockerHub account) or [GitHub](https://github.com/gbusch/protobuf-compiler).
 
 ### Processing, storing, and displaying data on the Raspberry Pi
-TBD
+The measurements that the ESP32 sent as protobuf-encoded MQTT messages, are then processed, stored and displayed using different software components:
+* Eclipse Mosquitto as MQTT broker. The ESP32 publishes messages to a specific topic. Other programs can now subscribe to this topic and receive the messages. The MQTT broker is accessible within the home network and can be used for other projects as well.
+* A MQTT forwarder script. A simple python script that subscribes to the MQTT topic, decodes all received messages and stores them in a database.
+* An InfluxDB databse where the measurements are stored. A shared volume ensures that the data is persisted when the docker container is shutdown or restarted.
+* Grafana which is a dashboarding and monitoring tool. The data is displayed in a dashboard that is accessible in a browser from all devices in the network. Furthermore, notifications can be sent, in this example via the Telegram messaging app. Grafana offers provisioning which means that all configuration, including the dashboard definition, is provided in files and no manual configuration is necessary. 
 
+All these components are running as Docker containers on the Raspberry Pi. Using docker-compose, the whole stack can be started with one single command. Running them as Docker containers offers many advantages:
+* Preconfigured Docker containers are provided for most open-source projects so that no manual installation is necessary.
+* Configuration can be documented and version-controlled using the docker-compose file.
+* Dependencies are automatically handled.
+* Everything can be started (and shut down) with one command.
+
+Software and more detailed instructions on how to set it up on the Raspberry Pi can be found in the directory [raspberrypi](./raspberrypi/) and the corresponding [README](./raspberrypi/README.md).
 
 
 ## Shopping list
