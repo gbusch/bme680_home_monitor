@@ -1,6 +1,6 @@
 # Setting up the sensor and microcontroller
 
-* Install platform.io (instructions can be found on the ][project's webpages](https://platformio.org))
+* Install platform.io (instructions can be found on the [project's webpages](https://platformio.org))
 
 * If you use the ESP32 for the first time, you might need to install USB drivers. My ESP32 board uses a CP2102 USB serial communication interface module for which drivers are provided by Silicon Labs.
 

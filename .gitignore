@@ -2,7 +2,7 @@
 raspberrypi/influxdb/data/*
 
 # telegram notifier (credentials)
-grafana/provisioning/notifiers/telegram.yml
+raspberrypi/grafana/provisioning/notifiers/*.yml
 
 # vscode
 .vscode/

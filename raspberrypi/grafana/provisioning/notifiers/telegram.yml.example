@@ -4,6 +4,6 @@ notifiers:
     uid: notifier1
     org_name: "Main Org."
     settings:
-      bottoken: ***REMOVED***
-      chatid: ***REMOVED***
+      bottoken: ## your bot token here ##
+      chatid: ## your chat ID here ##
       uploadImage: true
