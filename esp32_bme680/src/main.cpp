@@ -30,11 +30,34 @@ int Nmeasure;
 WiFiClient espClient;
 PubSubClient client(espClient);
 
+//for watchdog
+#include "esp_system.h"
+const int loopTimeCtl = 0;
+hw_timer_t *timer = NULL;
+const int watchdogTimeoutUs = 30000000; //in usec
+
+void IRAM_ATTR resetModule()
+{
+  ets_printf("reboot\n");
+  esp_restart();
+}
+
+void feedWatchdog()
+{
+  timerWrite(timer, 0); //reset timer (feed watchdog)
+}
+
 // Entry point for the example
 void setup(void)
 {
   Serial.begin(115200);
   Wire.begin(16, 17);
+
+  //setup watchdog early to allow trigger even during setup
+  timer = timerBegin(0, 80, true); //timer 0, div 80
+  timerAttachInterrupt(timer, &resetModule, true);
+  timerAlarmWrite(timer, watchdogTimeoutUs, false); //set time in us
+  timerAlarmEnable(timer);                          //enable interrupt
 
   Serial.print("## Connecting to WiFi ##");
   WiFi.begin(ssid, password);
@@ -101,6 +124,7 @@ void loop(void)
     {
       if (!client.connected())
       {
+        delay(3000);
         mqtt_reconnect();
       }
 
