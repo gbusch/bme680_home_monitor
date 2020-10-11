@@ -1,13 +1,13 @@
 version: '3.7'
 services:
   mqtt:
-    image: eclipse-mosquitto:1.6.9
+    image: eclipse-mosquitto:1.6.12
     restart: always
     ports:
       - "1883:1883"
   
   influxdb:
-    image: influxdb:1.8.0
+    image: influxdb:1.8.3
     restart: always
     ports:
       - "8086:8086"
@@ -31,7 +31,7 @@ services:
       - influxdb
   
   grafana:
-    image: grafana/grafana:6.7.2
+    image: grafana/grafana:7.2.1
     restart: always
     ports:
       - "3000:3000"
